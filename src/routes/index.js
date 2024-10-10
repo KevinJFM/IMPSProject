@@ -9,7 +9,7 @@ router.get('/', async (request,response) => {
     const lstEstudiantes = await estudianteRepository.obtenerTodosLosEstudiantes();
     console.log('Listado: ', lstEstudiantes);
 
-    response.send('Binevenido al laboratorio de IMPS');
+    response.send('Bienvenido al laboratorio de IMPS');
 });
 
 module.exports = router;
