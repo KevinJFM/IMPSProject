@@ -1,49 +1,35 @@
 const mysql = require('mysql2');
 const { promisify } = require('util');
 const { database } = require('./keys');
-const { CONSTANTS } = require('../utils/utils');
-const { error } = require('console');
+const {CONSTANTS} = require('../utils/utils');
+const pool = mysql.createPool(database);
 
-const pool = mysql.createPool(database); // se crea el pool de conexiones
-
-//Iniciando conexin con la base d e datos
-pool.getConnection((error, conexion) => {
-    //Validar si la conexion tiene algun tipo de error
-    if  (error) {
-        //Validando codigos de error mas comunes
-        switch (error.code) {
+pool.getConnection((err, connection) => {
+    if(err){
+        switch(err.code){
             case CONSTANTS.PROTOCOL_CONNECTION_LOST:
-            //Indicando que la conexion con la base de datos esta perdida
-            console.error('DATABASE CONNECTION WAS CLOSED');
-            break;
-            //Indica que existen demasiadas conexiones
+                console.error("Database connection was closed");
+                break;
             case CONSTANTS.ER_CON_COUNT_ERROR:
-                console.error('DATABASE HAS TO MANY CONNECTIONS');
+                console.error("Database has too many connections");
                 break;
-            //Indica que la conexion fue rechazada
             case CONSTANTS.ECONNREFUSED:
-                console.error('DATABASE CONNECTION HAS REFUSED');
+                console.error("Database connection was refused");
                 break;
-                //Indica que el acceso esta denegado
-            case CONSTANTS.ER_ACCES_DENIED_ERROR:
-                console.erorq('ACCES DENIED FOR USER');
+            case CONSTANTS.ER_ACCESS_DENIED_ERROR:
+                console.error("Access denied for user");              
                 break;
             default:
-                console.error('Error de base de datos no encontrado')
+                console.error(err,"Base datos no encontrada");
                 break;
         }
     }
-
-    //Si la coneexion es existosa, imprimir un mensaje indicandolo
-    if(conexion) {
-        console.log('Conexion establecida con la base de datos');
-        conexion.release();
+    if(connection){
+        console.log("CONEXION EXITOSA...");
+        connection.release();
     }
-
     return;
 });
 
-//Configyrando PROMISIY para permitir en cada consulta un async/await (promesas)
 pool.query = promisify(pool.query);
-
 module.exports = pool;

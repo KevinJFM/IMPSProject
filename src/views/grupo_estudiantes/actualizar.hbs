@@ -1,0 +1,42 @@
+<div class="container p-4">
+    <div class="row justify-content-center">
+        <h1>Actualizar Grupo - Estudiante</h1>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+            <form method="POST" action="/grupo_estudiantes/actualizar/{{grupoEstudiante.idestudiante}}/{{grupoEstudiante.idgrupo}}">
+                <div class="form-group">
+                    <label for="idgrupo">Grupo</label>
+                    <select class="form-control" name="idgrupo" id="idgrupo" required>
+                        <option value="0">Seleccione un grupo</option>
+                        {{#each grupos}}
+                        <option value="{{this.idgrupo}}" {{#ifEquals this.idgrupo ../grupoEstudiante.idgrupo}}selected{{/ifEquals}}>
+                            {{this.num_grupo}} - {{this.anio}} - {{this.ciclo}}
+                        </option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="idestudiante">Estudiante</label>
+                    <select class="form-control" name="idestudiante" id="idestudiante" required>
+                        <option value="0">Seleccione un estudiante</option>
+                        {{#each estudiantes}}
+                        <option value="{{this.idestudiante}}" {{#ifEquals this.idestudiante ../grupoEstudiante.idestudiante}}selected{{/ifEquals}}>
+                            {{this.nombre}} {{this.apellido}}
+                        </option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-block">Actualizar</button>
+                </div>
+            </form>
+            {{#if mensaje}}
+            <div class="alert alert-info mt-3">
+                {{mensaje}}
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>

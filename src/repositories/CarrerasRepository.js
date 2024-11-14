@@ -1,6 +1,6 @@
 const pool = require('../config/databaseController');
 
-module.exports = {
+module.exports ={
     // Consulta para obtener todas las carreras
     obtenerTodasLasCarreras: async () => {
         try {
@@ -24,7 +24,7 @@ module.exports = {
     },
 
     // Insertar una carrera
-    insertarCarrera: async (idcarrera, carrera) => {
+    agregarCarrera: async (idcarrera, carrera) => {
         try {
             const result = await pool.query('INSERT INTO carreras (idcarrera, carrera) VALUES (?, ?)', [idcarrera, carrera]);
             return result.affectedRows > 0;
